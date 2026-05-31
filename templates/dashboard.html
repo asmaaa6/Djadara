@@ -2,65 +2,285 @@
 {% block title %}Dashboard — Yassir RH{% endblock %}
 
 {% block content %}
+
 <div class="page-header">
-  <h1>Tableau de bord</h1>
-  <p style="color: var(--slate-600); font-size: 0.95rem;">Suivez vos indicateurs de recrutement en temps réel.</p>
+    <h1 style="font-size: 2rem; font-weight: 700; color: #0F172A;">
+        Bienvenue sur Yassir RH
+    </h1>
+
+    <p style="
+        color: #64748B;
+        font-size: 1rem;
+        margin-top: 8px;
+    ">
+        Gérez vos recrutements, analysez les CV et identifiez les meilleurs candidats grâce à l'intelligence artificielle.
+    </p>
 </div>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 32px;">
-  <div class="card" style="margin-bottom: 0; display: flex; align-items: center; gap: 20px;">
-    <div style="width: 52px; height: 52px; background: #EFF6FF; color: #3B82F6; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
-      <i class="fa-solid fa-briefcase"></i>
-    </div>
-    <div>
-      <p style="font-size: 0.85rem; color: var(--slate-400); font-weight: 600; text-transform: uppercase;">Offres Actives</p>
-      <h2 style="font-size: 1.8rem; font-weight: 700;">12</h2>
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom: 0; display: flex; align-items: center; gap: 20px;">
-    <div style="width: 52px; height: 52px; background: #ECFDF5; color: #10B981; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
-      <i class="fa-solid fa-file-invoice"></i>
-    </div>
-    <div>
-      <p style="font-size: 0.85rem; color: var(--slate-400); font-weight: 600; text-transform: uppercase;">CVs Analysés</p>
-      <h2 style="font-size: 1.8rem; font-weight: 700;">148</h2>
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom: 0; display: flex; align-items: center; gap: 20px;">
-    <div style="width: 52px; height: 52px; background: #FFF1F2; color: #F43F5E; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
-      <i class="fa-solid fa-bolt"></i>
-    </div>
-    <div>
-      <p style="font-size: 0.85rem; color: var(--slate-400); font-weight: 600; text-transform: uppercase;">Taux de Match Moyen</p>
-      <h2 style="font-size: 1.8rem; font-weight: 700;">74%</h2>
-    </div>
-  </div>
-</div>
+<!-- Actions rapides -->
 
 <div class="card">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-    <h3 style="font-size: 1.15rem; font-weight: 700;">Analyses de candidatures récentes</h3>
-    <a href="/matching" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">Nouvelle analyse</a>
-  </div>
 
-  <div style="display: flex; flex-direction: column; gap: 12px;">
-    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; border: 1px solid var(--slate-100); border-radius: var(--radius-md); transition: var(--transition);" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--slate-100)'">
-      <div style="display: flex; align-items: center; gap: 16px;">
-        <div style="width: 40px; height: 40px; background: var(--slate-100); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--slate-700);">
-          <i class="fa-regular fa-file-pdf" style="font-size: 1.2rem;"></i>
-        </div>
-        <div>
-          <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 2px;">CV_Dev_Backend_Alger.pdf</h4>
-          <p style="font-size: 0.8rem; color: var(--slate-400);">Analysé il y a 10 minutes • Rattaché à l'offre #3</p>
-        </div>
-      </div>
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <span class="badge badge-success">Excellent (88%)</span>
-        <i class="fa-solid fa-chevron-right" style="color: var(--slate-400); font-size: 0.85rem;"></i>
-      </div>
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:30px;
+    ">
+        <h2 style="
+            font-size:1.3rem;
+            font-weight:700;
+            color:#0F172A;
+        ">
+            Actions rapides
+        </h2>
     </div>
-  </div>
+
+    <div style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+        gap:24px;
+    ">
+
+        <!-- Analyse CV -->
+
+        <a href="/matching" style="
+            text-decoration:none;
+            color:inherit;
+        ">
+            <div style="
+                background:white;
+                border:1px solid #E5E7EB;
+                border-radius:18px;
+                padding:30px;
+                height:100%;
+                transition:0.3s;
+                cursor:pointer;
+            "
+            onmouseover="
+                this.style.transform='translateY(-5px)';
+                this.style.boxShadow='0 10px 25px rgba(0,0,0,0.08)';
+                this.style.borderColor='#1A6B4A';
+            "
+            onmouseout="
+                this.style.transform='translateY(0)';
+                this.style.boxShadow='none';
+                this.style.borderColor='#E5E7EB';
+            ">
+
+                <div style="
+                    width:65px;
+                    height:65px;
+                    background:#ECFDF5;
+                    border-radius:15px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    margin-bottom:20px;
+                ">
+                    <i class="fa-solid fa-file-arrow-up"
+                       style="font-size:28px;color:#1A6B4A;"></i>
+                </div>
+
+                <h3 style="
+                    font-size:1.1rem;
+                    font-weight:700;
+                    margin-bottom:10px;
+                ">
+                    Analyse des CV
+                </h3>
+
+                <p style="
+                    color:#64748B;
+                    line-height:1.6;
+                    font-size:14px;
+                ">
+                    Importez un ou plusieurs CV PDF et obtenez automatiquement un classement des candidats.
+                </p>
+
+            </div>
+        </a>
+
+        <!-- Offres -->
+
+        <a href="/offres" style="
+            text-decoration:none;
+            color:inherit;
+        ">
+            <div style="
+                background:white;
+                border:1px solid #E5E7EB;
+                border-radius:18px;
+                padding:30px;
+                height:100%;
+                transition:0.3s;
+                cursor:pointer;
+            "
+            onmouseover="
+                this.style.transform='translateY(-5px)';
+                this.style.boxShadow='0 10px 25px rgba(0,0,0,0.08)';
+                this.style.borderColor='#2563EB';
+            "
+            onmouseout="
+                this.style.transform='translateY(0)';
+                this.style.boxShadow='none';
+                this.style.borderColor='#E5E7EB';
+            ">
+
+                <div style="
+                    width:65px;
+                    height:65px;
+                    background:#EFF6FF;
+                    border-radius:15px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    margin-bottom:20px;
+                ">
+                    <i class="fa-solid fa-briefcase"
+                       style="font-size:28px;color:#2563EB;"></i>
+                </div>
+
+                <h3 style="
+                    font-size:1.1rem;
+                    font-weight:700;
+                    margin-bottom:10px;
+                ">
+                    Offres d'emploi
+                </h3>
+
+                <p style="
+                    color:#64748B;
+                    line-height:1.6;
+                    font-size:14px;
+                ">
+                    Créez et gérez vos offres de recrutement en quelques clics.
+                </p>
+
+            </div>
+        </a>
+
+        <!-- Historique -->
+
+        <a href="/historique" style="
+            text-decoration:none;
+            color:inherit;
+        ">
+            <div style="
+                background:white;
+                border:1px solid #E5E7EB;
+                border-radius:18px;
+                padding:30px;
+                height:100%;
+                transition:0.3s;
+                cursor:pointer;
+            "
+            onmouseover="
+                this.style.transform='translateY(-5px)';
+                this.style.boxShadow='0 10px 25px rgba(0,0,0,0.08)';
+                this.style.borderColor='#F59E0B';
+            "
+            onmouseout="
+                this.style.transform='translateY(0)';
+                this.style.boxShadow='none';
+                this.style.borderColor='#E5E7EB';
+            ">
+
+                <div style="
+                    width:65px;
+                    height:65px;
+                    background:#FFFBEB;
+                    border-radius:15px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    margin-bottom:20px;
+                ">
+                    <i class="fa-solid fa-clock-rotate-left"
+                       style="font-size:28px;color:#F59E0B;"></i>
+                </div>
+
+                <h3 style="
+                    font-size:1.1rem;
+                    font-weight:700;
+                    margin-bottom:10px;
+                ">
+                    Historique
+                </h3>
+
+                <p style="
+                    color:#64748B;
+                    line-height:1.6;
+                    font-size:14px;
+                ">
+                    Consultez les analyses réalisées et les candidats déjà évalués.
+                </p>
+
+            </div>
+        </a>
+
+    </div>
+
 </div>
+
+<!-- Activité récente -->
+
+<div class="card">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:25px;
+    ">
+
+        <h2 style="
+            font-size:1.25rem;
+            font-weight:700;
+        ">
+            Activité récente
+        </h2>
+
+        <a href="/matching" class="btn btn-secondary">
+            Nouvelle analyse
+        </a>
+
+    </div>
+
+    <div style="
+        padding:25px;
+        border:2px dashed #E5E7EB;
+        border-radius:15px;
+        text-align:center;
+    ">
+
+        <i class="fa-solid fa-folder-open"
+           style="
+           font-size:50px;
+           color:#CBD5E1;
+           margin-bottom:15px;
+        "></i>
+
+        <h3 style="
+            color:#334155;
+            margin-bottom:10px;
+        ">
+            Aucune analyse récente
+        </h3>
+
+        <p style="
+            color:#64748B;
+            margin-bottom:20px;
+        ">
+            Commencez votre première analyse de CV pour voir apparaître vos résultats ici.
+        </p>
+
+        <a href="/matching" class="btn btn-primary">
+            Analyser des CV
+        </a>
+
+    </div>
+
+</div>
+
 {% endblock %}

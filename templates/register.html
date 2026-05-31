@@ -4,63 +4,309 @@
 
 {% block head %}
 <style>
-    .login-outer {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #F5F5F0;
         min-height: 100vh;
+    }
+
+    .page-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: radial-gradient(circle at 10% 20%, rgb(255, 200, 212) 0%, rgb(255, 240, 243) 90.1%);
-        padding: 20px;
+        min-height: 100vh;
+        padding: 30px;
     }
-    .login-card {
-        background: #ffffff;
-        padding: 40px;
-        border-radius: 24px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+
+    .register-card {
+        background: white;
         width: 100%;
-        max-width: 450px;
+        max-width: 500px;
+        border-radius: 20px;
+        padding: 45px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.06);
     }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 14px; }
-    .form-control { width: 100%; padding: 12px 14px; border: 1.5px solid #E2E8F0; border-radius: 12px; outline: none; }
-    .btn-primary { width: 100%; background: #FF3366; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 35px;
+    }
+
+    .brand-icon {
+        width: 45px;
+        height: 45px;
+        background: #1A6B4A;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    .brand-text strong {
+        display: block;
+        color: #0F172A;
+        font-size: 16px;
+    }
+
+    .brand-text span {
+        color: #64748B;
+        font-size: 12px;
+    }
+
+    h1 {
+        font-size: 28px;
+        color: #0F172A;
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        color: #64748B;
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 13px 15px;
+        border: 1.5px solid #E5E7EB;
+        border-radius: 10px;
+        font-size: 14px;
+        background: #FAFAFA;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    .form-control:focus {
+        border-color: #1A6B4A;
+        background: white;
+    }
+
+    .password-info {
+        font-size: 12px;
+        color: #64748B;
+        margin-top: 5px;
+    }
+
+    .checkbox-container {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+        margin: 20px 0;
+        font-size: 13px;
+        color: #64748B;
+    }
+
+    .checkbox-container input {
+        margin-top: 2px;
+    }
+
+    .btn-submit {
+        width: 100%;
+        background: #1A6B4A;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .btn-submit:hover {
+        background: #155C3E;
+    }
+
+    .footer-text {
+        text-align: center;
+        margin-top: 25px;
+        color: #64748B;
+        font-size: 14px;
+    }
+
+    .footer-text a {
+        color: #1A6B4A;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .footer-text a:hover {
+        text-decoration: underline;
+    }
+
+    .alert {
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 13px;
+    }
+
+    .alert-danger {
+        background: #FEE2E2;
+        color: #B91C1C;
+    }
+
+    .alert-success {
+        background: #D1FAE5;
+        color: #065F46;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="login-outer">
-    <div class="login-card">
-        <h1 style="font-size: 26px; margin-bottom: 5px;">Inscription</h1>
-        <p style="color: #64748B; margin-bottom: 25px;">Créez votre profil recruteur</p>
+<div class="page-wrapper">
 
-        <form action="{{ url_for('register') }}" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="nom">Nom complet *</label>
-                <input type="text" id="nom" name="nom" class="form-control" required>
+    <div class="register-card">
+
+        <div class="brand">
+            <div class="brand-icon">Y</div>
+            <div class="brand-text">
+                <strong>Yassir RH</strong>
+                <span>Recrutement Intelligent</span>
             </div>
+        </div>
+
+        <h1>Créer un compte</h1>
+        <p class="subtitle">
+            Rejoignez la plateforme de recrutement intelligent
+        </p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endwith %}
+
+        <form action="{{ url_for('register') }}"
+              method="POST"
+              enctype="multipart/form-data"
+              id="registerForm">
+
             <div class="form-group">
-                <label for="entreprise">Entreprise / Organisation</label>
-                <input type="text" id="entreprise" name="entreprise" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="email">Adresse email *</label>
-                <input type="email" id="email" name="email" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Mot de passe *</label>
-                <input type="password" id="password" name="password" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="avatar">Photo de profil (Avatar)</label>
-                <input type="file" id="avatar" name="avatar" class="form-control" accept="image/*">
+                <label>Nom complet</label>
+                <input type="text"
+                       name="nom"
+                       class="form-control"
+                       placeholder="Votre nom complet"
+                       required>
             </div>
 
-            <button type="submit" class="btn-primary" style="margin-top: 10px;">S'inscrire</button>
+            <div class="form-group">
+                <label>Entreprise</label>
+                <input type="text"
+                       name="entreprise"
+                       class="form-control"
+                       placeholder="Nom de l'entreprise"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Adresse email professionnelle</label>
+                <input type="email"
+                       name="email"
+                       class="form-control"
+                       placeholder="nom@entreprise.com"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password"
+                       id="password"
+                       name="password"
+                       class="form-control"
+                       placeholder="********"
+                       required>
+
+                <div class="password-info">
+                    Minimum 8 caractères.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Confirmer le mot de passe</label>
+                <input type="password"
+                       id="confirm_password"
+                       name="confirm_password"
+                       class="form-control"
+                       placeholder="********"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Photo de profil (optionnel)</label>
+                <input type="file"
+                       name="avatar"
+                       class="form-control"
+                       accept="image/*">
+            </div>
+
+            <div class="checkbox-container">
+                <input type="checkbox" required>
+                <span>
+                    J'accepte les conditions d'utilisation et la politique de confidentialité.
+                </span>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                Créer mon compte
+            </button>
+
         </form>
 
-        <p style="text-align: center; margin-top: 20px; font-size: 14px; color: #64748B;">
-            Déjà inscrit ? <a href="{{ url_for('login') }}" style="color: #FF3366; text-decoration: none; font-weight: 600;">Se connecter</a>
+        <p class="footer-text">
+            Déjà inscrit ?
+            <a href="{{ url_for('login') }}">
+                Se connecter
+            </a>
         </p>
+
     </div>
+
 </div>
+
+<script>
+document.getElementById("registerForm").addEventListener("submit", function(e){
+
+    let password = document.getElementById("password").value;
+    let confirm = document.getElementById("confirm_password").value;
+
+    if(password.length < 8){
+        alert("Le mot de passe doit contenir au moins 8 caractères.");
+        e.preventDefault();
+        return;
+    }
+
+    if(password !== confirm){
+        alert("Les mots de passe ne correspondent pas.");
+        e.preventDefault();
+        return;
+    }
+});
+</script>
 {% endblock %}

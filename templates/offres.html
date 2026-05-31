@@ -1,93 +1,226 @@
 {% extends "base.html" %}
-{% block title %}Offres d'emploi — CV Assistant{% endblock %}
+{% block title %}Offres d'emploi — Yassir RH{% endblock %}
 {% block head %}
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  .offer-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  :root {
+    --green:    #1A6B4A;
+    --green-l:  #ECFDF5;
+    --green-m:  #6EE7B7;
+    --text:     #0F172A;
+    --muted:    #64748B;
+    --border:   #E2E8F0;
+    --bg:       #F8FAFC;
+    --white:    #FFFFFF;
+    --red:      #EF4444;
+    --red-l:    #FEE2E2;
+    --shadow:   0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+    --radius:   14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.75rem;
+  }
+  .page-header h1 {
+    font-size: 1.5rem; font-weight: 700; color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .page-header p { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
+
+  /* ── BUTTON ── */
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--green); color: #fff;
+    border: none; border-radius: 10px;
+    padding: 0.6rem 1.1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; transition: background 0.18s, transform 0.12s, box-shadow 0.18s;
+    box-shadow: 0 2px 8px rgba(26,107,74,0.25);
+  }
+  .btn-primary:hover {
+    background: #155C3E;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(26,107,74,0.3);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-ghost {
+    background: transparent; border: 1.5px solid var(--border);
+    color: var(--muted); border-radius: 10px;
+    padding: 0.6rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .btn-ghost:hover { border-color: var(--green); color: var(--green); background: var(--green-l); }
+
+  /* ── OFFER LIST ── */
+  .offer-list { display: flex; flex-direction: column; gap: 0.65rem; }
 
   .offer-row {
     background: var(--white);
-    border: 1px solid var(--border);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius);
-    padding: 1.1rem 1.4rem;
+    padding: 1rem 1.25rem;
     display: flex; align-items: center; gap: 1rem;
-    box-shadow: var(--shadow-sm);
-    transition: border-color 0.15s, transform 0.15s;
+    box-shadow: var(--shadow);
+    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    position: relative; overflow: hidden;
   }
-
+  .offer-row::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: transparent;
+    transition: background 0.15s;
+    border-radius: 3px 0 0 3px;
+  }
   .offer-row:hover {
-    border-color: var(--accent-m);
-    transform: translateY(-1px);
+    border-color: var(--green-m);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(26,107,74,0.1);
   }
+  .offer-row:hover::before { background: var(--green); }
 
-  .offer-row-icon {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: var(--accent-l);
+  .offer-icon {
+    width: 42px; height: 42px; border-radius: 11px;
+    background: var(--green-l);
     display: flex; align-items: center; justify-content: center;
-    color: var(--accent); flex-shrink: 0;
+    color: var(--green); flex-shrink: 0;
   }
 
-  .offer-row-info { flex: 1; min-width: 0; }
-  .offer-row-title { font-weight: 700; font-size: 0.9rem; color: var(--text); }
-  .offer-row-meta {
-    font-size: 0.78rem; color: var(--muted); margin-top: 3px;
-    display: flex; align-items: center; gap: 8px;
+  .offer-info { flex: 1; min-width: 0; }
+  .offer-title {
+    font-weight: 700; font-size: 0.9rem; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .offer-row-meta .sep { color: var(--border); }
+  .offer-meta {
+    font-size: 0.76rem; color: var(--muted); margin-top: 4px;
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  }
+  .offer-meta .dot { color: var(--border); font-size: 0.9rem; }
 
-  .offer-row-actions {
-    display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;
+  .offer-actions { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+
+  .badge {
+    font-size: 0.7rem; font-weight: 600;
+    padding: 3px 9px; border-radius: 20px;
+    background: var(--green-l); color: var(--green);
+    white-space: nowrap;
   }
 
   .matcher-btn {
     display: inline-flex; align-items: center; gap: 5px;
-    font-size: 0.8rem; font-weight: 600; color: var(--accent);
-    text-decoration: none; padding: 0.3rem 0.65rem;
-    border-radius: 6px; transition: background 0.15s;
+    font-size: 0.8rem; font-weight: 600; color: var(--green);
+    text-decoration: none; padding: 0.35rem 0.75rem;
+    border-radius: 8px; background: var(--green-l);
+    transition: all 0.15s; white-space: nowrap;
   }
-  .matcher-btn:hover { background: var(--accent-l); }
+  .matcher-btn:hover { background: var(--green); color: white; }
+
+  .delete-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 8px;
+    background: transparent; border: 1.5px solid var(--border);
+    color: var(--muted); cursor: pointer; transition: all 0.15s;
+  }
+  .delete-btn:hover { background: var(--red-l); border-color: var(--red); color: var(--red); }
+
+  /* ── EMPTY STATE ── */
+  .empty-card {
+    background: var(--white); border: 2px dashed var(--border);
+    border-radius: var(--radius); padding: 3.5rem 2rem;
+    text-align: center; box-shadow: var(--shadow);
+  }
+  .empty-icon {
+    width: 64px; height: 64px; border-radius: 16px;
+    background: var(--green-l);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; margin: 0 auto 1.25rem;
+  }
+  .empty-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .empty-card p { font-size: 0.875rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
 
   /* ── MODAL ── */
   .modal-overlay {
     display: none; position: fixed; inset: 0;
-    background: rgba(26,29,39,0.5); z-index: 200;
+    background: rgba(15,23,42,0.55); z-index: 300;
     align-items: center; justify-content: center;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
+    padding: 1rem;
   }
   .modal-overlay.active { display: flex; }
 
   .modal {
-    background: var(--white); border-radius: 16px;
-    width: 100%; max-width: 520px; margin: 1rem;
-    box-shadow: 0 24px 80px rgba(26,29,39,0.2);
-    animation: slideUp 0.2s ease;
+    background: var(--white); border-radius: 20px;
+    width: 100%; max-width: 540px;
+    box-shadow: 0 32px 80px rgba(15,23,42,0.2);
+    animation: popUp 0.22s cubic-bezier(0.34,1.56,0.64,1);
   }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
+  @keyframes popUp {
+    from { opacity: 0; transform: scale(0.94) translateY(12px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
   }
 
   .modal-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--border);
+    padding: 1.4rem 1.6rem 1.1rem;
   }
-  .modal-header h2 { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+  .modal-header-left { display: flex; align-items: center; gap: 12px; }
+  .modal-header-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--green-l);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--green);
+  }
+  .modal-header h2 { font-size: 1rem; font-weight: 700; color: var(--text); }
+  .modal-header p  { font-size: 0.78rem; color: var(--muted); margin-top: 1px; }
 
   .modal-close {
-    width: 28px; height: 28px; border-radius: 7px;
+    width: 30px; height: 30px; border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     background: var(--bg); border: none; cursor: pointer;
-    color: var(--muted); transition: all 0.15s;
+    color: var(--muted); transition: all 0.15s; flex-shrink: 0;
   }
   .modal-close:hover { background: var(--red-l); color: var(--red); }
 
-  .modal-body { padding: 1.5rem; }
+  .modal-divider { height: 1px; background: var(--border); margin: 0 1.6rem; }
+
+  .modal-body { padding: 1.4rem 1.6rem; display: flex; flex-direction: column; gap: 1rem; }
+
+  .field label {
+    display: block; font-size: 0.8rem; font-weight: 600;
+    color: var(--text); margin-bottom: 6px;
+  }
+  .field label span { color: var(--red); margin-left: 2px; }
+
+  .field input, .field textarea, .field select {
+    width: 100%; padding: 0.65rem 0.85rem;
+    border: 1.5px solid var(--border); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem; color: var(--text);
+    background: var(--bg); outline: none;
+    transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+  }
+  .field input:focus, .field textarea:focus {
+    border-color: var(--green); background: var(--white);
+    box-shadow: 0 0 0 3px rgba(26,107,74,0.1);
+  }
+  .field input::placeholder, .field textarea::placeholder { color: #94A3B8; }
+  .field textarea { resize: vertical; min-height: 80px; }
+
+  .field-hint { font-size: 0.74rem; color: var(--muted); margin-top: 4px; }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
 
   .modal-footer {
     display: flex; gap: 0.75rem; justify-content: flex-end;
-    padding: 1rem 1.5rem;
-    border-top: 1px solid var(--border);
+    padding: 1rem 1.6rem 1.4rem;
   }
 </style>
 {% endblock %}
@@ -96,9 +229,9 @@
 <div class="page-header">
   <div>
     <h1>Offres d'emploi</h1>
-    <p>{{ offres|length }} offre{{ 's' if offres|length != 1 }} publiée{{ 's' if offres|length != 1 }}</p>
+    <p>{{ offres|length }} offre{{ 's' if offres|length != 1 else '' }} publiée{{ 's' if offres|length != 1 else '' }}</p>
   </div>
-  <button class="btn btn-primary" onclick="openModal()">
+  <button class="btn-primary" onclick="openModal()">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     Nouvelle offre
   </button>
@@ -108,93 +241,124 @@
   <div class="offer-list">
     {% for o in offres %}
       <div class="offer-row">
-        <div class="offer-row-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <div class="offer-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="7" width="20" height="14" rx="2"/>
             <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
           </svg>
         </div>
-        <div class="offer-row-info">
-          <div class="offer-row-title">{{ o.titre }}</div>
-          <div class="offer-row-meta">
-            <span>{{ o.entreprise if o.entreprise else session.get('nom','') }}</span>
-            <span class="sep">•</span>
-            {% if o.experience %}
-              <span>{{ o.experience }}</span>
-              <span class="sep">•</span>
+        <div class="offer-info">
+          <div class="offer-title">{{ o.titre }}</div>
+          <div class="offer-meta">
+            <span>{{ o.experience if o.experience else 'Expérience non précisée' }}</span>
+            <span class="dot">•</span>
+            <span>{{ o.created_at.strftime('%d %b %Y') if o.created_at else 'Récemment' }}</span>
+            {% if o.competences %}
+              <span class="dot">•</span>
+              <span style="font-family:'DM Mono',monospace; font-size:0.72rem; color: var(--green);">
+                {{ o.competences[:40] }}{{ '…' if o.competences|length > 40 else '' }}
+              </span>
             {% endif %}
-            <span>{{ o.created_at.strftime('%d/%m/%Y') if o.created_at else 'Récemment' }}</span>
           </div>
         </div>
-        <div class="offer-row-actions">
-          <span class="badge badge-stage">Stage</span>
+        <div class="offer-actions">
           <a href="/matching?offre_id={{ o.id }}" class="matcher-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             Matcher
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
           </a>
+          <form action="/supprimer-offre/{{ o.id }}" method="POST" onsubmit="return confirm('Supprimer cette offre ?')">
+            <button type="submit" class="delete-btn" title="Supprimer">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14a2,2,0,0,1-2,2H8a2,2,0,0,1-2-2L5,6"/><path d="M10,11v6"/><path d="M14,11v6"/><path d="M9,6V4a1,1,0,0,1,1-1h4a1,1,0,0,1,1,1v2"/></svg>
+            </button>
+          </form>
         </div>
       </div>
     {% endfor %}
   </div>
 {% else %}
-  <div class="card">
-    <div class="empty-state">
-      <div class="empty-icon">💼</div>
-      <h3>Aucune offre publiée</h3>
-      <p>Créez votre première offre d'emploi pour commencer le matching de CV.</p>
-      <button class="btn btn-primary" onclick="openModal()">Créer une offre</button>
-    </div>
+  <div class="empty-card">
+    <div class="empty-icon">💼</div>
+    <h3>Aucune offre publiée</h3>
+    <p>Créez votre première offre d'emploi pour commencer<br>le matching de CV.</p>
+    <button class="btn-primary" onclick="openModal()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Créer une offre
+    </button>
   </div>
 {% endif %}
 
-<!-- MODAL NOUVELLE OFFRE -->
+<!-- ═══ MODAL NOUVELLE OFFRE ═══ -->
 <div class="modal-overlay" id="offreModal">
   <div class="modal">
     <div class="modal-header">
-      <h2>Nouvelle offre d'emploi</h2>
+      <div class="modal-header-left">
+        <div class="modal-header-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"/>
+            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          </svg>
+        </div>
+        <div>
+          <h2>Nouvelle offre d'emploi</h2>
+          <p>Remplissez les informations du poste</p>
+        </div>
+      </div>
       <button class="modal-close" onclick="closeModal()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <form action="/creer-offre" method="POST">
+
+    <div class="modal-divider"></div>
+
+    <form action="/offres" method="POST">
       <div class="modal-body">
+
         <div class="field">
-          <label>Titre du poste *</label>
-          <input type="text" name="titre" placeholder="Ex: Développeur Python Fullstack" required>
+          <label>Titre du poste <span>*</span></label>
+          <input type="text" name="titre" placeholder="Ex : Développeur Python Fullstack" required>
         </div>
+
         <div class="field">
-          <label>Compétences clés (séparées par des virgules) *</label>
-          <input type="text" name="competences" placeholder="Ex: Python, Flask, PostgreSQL, TF-IDF" required>
+          <label>Compétences clés <span>*</span></label>
+          <input type="text" name="competences" placeholder="Ex : Python, Flask, PostgreSQL, Docker" required>
+          <p class="field-hint">Séparez les compétences par des virgules</p>
         </div>
-        <div class="field">
-          <label>Niveau d'expérience</label>
-          <input type="text" name="experience" placeholder="Ex: Junior, 2 ans, Étudiant L3">
+
+        <div class="field-row">
+          <div class="field">
+            <label>Niveau d'expérience</label>
+            <input type="text" name="experience" placeholder="Ex : Junior, 2 ans…">
+          </div>
+          <div class="field">
+            <label>Formation souhaitée</label>
+            <input type="text" name="formation" placeholder="Ex : Bac+5, Master…">
+          </div>
         </div>
+
         <div class="field">
           <label>Description du poste</label>
-          <textarea name="description" rows="3" placeholder="Détails de la mission..."></textarea>
+          <textarea name="description" placeholder="Décrivez la mission, les responsabilités…"></textarea>
         </div>
+
       </div>
+
+      <div class="modal-divider"></div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-ghost" onclick="closeModal()">Annuler</button>
-        <button type="submit" class="btn btn-primary">Publier l'offre</button>
+        <button type="button" class="btn-ghost" onclick="closeModal()">Annuler</button>
+        <button type="submit" class="btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+          Publier l'offre
+        </button>
       </div>
     </form>
   </div>
 </div>
 
 <script>
-  function openModal() {
-    document.getElementById('offreModal').classList.add('active');
-  }
-  function closeModal() {
-    document.getElementById('offreModal').classList.remove('active');
-  }
-
-  // Ouvrir directement si ?new=1
+  function openModal()  { document.getElementById('offreModal').classList.add('active'); }
+  function closeModal() { document.getElementById('offreModal').classList.remove('active'); }
   if (window.location.search.includes('new=1')) openModal();
-
-  // Fermer au clic sur l'overlay
   document.getElementById('offreModal').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });

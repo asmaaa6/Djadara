@@ -1,247 +1,644 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yassir RH - Recrutement Intelligent par IA</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Djadara RH — Recrutement Intelligent par IA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    /* Logo SVG inline réutilisable */
+    .logo-icon {
+      width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0; display: block;
+    }
+    .logo-icon-lg { width: 44px; height: 44px; border-radius: 12px; }
+    .logo-icon-sm { width: 28px; height: 28px; border-radius: 7px; }
+
+    /* Topbar */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1.5px solid var(--border);
+      transition: box-shadow 0.2s;
+    }
+    .topbar.scrolled { box-shadow: var(--shadow-md); }
+    .topbar-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .topbar-name { font-weight: 700; font-size: 1rem; color: var(--text); letter-spacing: -0.3px; }
+
+    .topbar-nav { display: flex; align-items: center; gap: 4px; }
+    .topbar-nav a {
+      padding: 7px 14px; border-radius: 8px;
+      font-size: 0.875rem; font-weight: 500; color: var(--muted);
+      text-decoration: none; transition: var(--transition);
+    }
+    .topbar-nav a:hover { color: var(--green); background: var(--green-l); }
+
+    .topbar-actions { display: flex; align-items: center; gap: 10px; }
+    .btn-nav-login {
+      padding: 8px 18px; border-radius: 9px;
+      border: 1.5px solid var(--border); background: transparent;
+      font-size: 0.875rem; font-weight: 600; color: var(--text);
+      text-decoration: none; transition: var(--transition);
+    }
+    .btn-nav-login:hover { border-color: var(--green); color: var(--green); }
+    .btn-nav-signup {
+      padding: 8px 18px; border-radius: 9px;
+      background: var(--green); color: white; border: none;
+      font-size: 0.875rem; font-weight: 600;
+      text-decoration: none; transition: var(--transition);
+      box-shadow: 0 2px 8px var(--green-glow);
+    }
+    .btn-nav-signup:hover { background: var(--green-h); transform: translateY(-1px); color: white; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 100px 0 80px; position: relative; overflow: hidden;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(26,107,74,0.08) 0%, transparent 70%);
+    }
+    .hero::after {
+      content: ''; position: absolute; top: -100px; right: -200px;
+      width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(110,231,183,0.1) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 30px;
+      background: var(--green-l); border: 1px solid rgba(110,231,183,0.5);
+      font-size: 0.78rem; font-weight: 600; color: var(--green); margin-bottom: 28px;
+    }
+    .hero-pill .dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+      animation: pulse-dot 2s ease infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:0.6; transform:scale(0.8); }
+    }
+    .hero-title {
+      font-size: clamp(2.4rem,5.5vw,4rem); font-weight: 800; color: var(--text);
+      letter-spacing: -2px; line-height: 1.08; margin-bottom: 22px;
+    }
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, var(--green) 0%, #22D3A5 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub { font-size: 1.05rem; color: var(--slate-600); line-height: 1.75; max-width: 540px; margin: 0 auto 40px; }
+    .hero-btns { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .hero-note { font-size: 0.78rem; color: var(--muted); margin-top: 14px; }
+    .hero-note i { color: var(--green); }
+
+    /* Hero mockup */
+    .hero-visual {
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 24px;
+      box-shadow: 0 24px 80px rgba(26,107,74,0.12); max-width: 440px; margin: 0 auto;
+    }
+    .visual-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .visual-title { font-weight: 700; font-size: 0.9rem; color: var(--text); }
+    .visual-badge { font-size: 0.7rem; font-weight: 600; padding: 3px 9px; border-radius: 20px; background: var(--green-l); color: var(--green); }
+    .cv-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .cv-row:last-child { border-bottom: none; }
+    .cv-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--green-l); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: var(--green); flex-shrink: 0; }
+    .cv-info { flex: 1; min-width: 0; }
+    .cv-name { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+    .cv-role { font-size: 0.73rem; color: var(--muted); margin-top: 1px; }
+    .cv-score { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; }
+    .score-high { color: var(--green); }
+    .score-mid  { color: var(--amber); }
+    .score-low  { color: var(--blue); }
+    .score-bar-wrap { width: 60px; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 4px; }
+    .score-bar-fill { height: 100%; border-radius: 3px; }
+
+    /* STATS */
+    .stats-band { background: var(--white); border-top: 1.5px solid var(--border); border-bottom: 1.5px solid var(--border); padding: 36px 0; }
+    .stat-num { font-family: 'DM Mono', monospace; font-size: 2rem; font-weight: 700; color: var(--green); letter-spacing: -1px; display: block; }
+    .stat-lbl { font-size: 0.82rem; color: var(--muted); font-weight: 500; margin-top: 4px; }
+
+    /* FEATURES */
+    .features { padding: 96px 0; background: var(--bg); }
+    .section-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); margin-bottom: 12px; display: block; }
+    .section-title { font-size: 2rem; font-weight: 800; color: var(--text); letter-spacing: -0.8px; margin-bottom: 10px; }
+    .section-sub   { font-size: 1rem; color: var(--slate-600); }
+    .feat-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 20px; padding: 30px 26px; height: 100%; transition: all 0.2s; }
+    .feat-card:hover { border-color: var(--green-m); box-shadow: var(--shadow-md); transform: translateY(-4px); }
+    .feat-icon { width: 52px; height: 52px; background: var(--green-l); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--green); margin-bottom: 18px; }
+    .feat-title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .feat-desc  { font-size: 0.875rem; color: var(--slate-600); line-height: 1.65; }
+
+    /* HOW */
+    .how { padding: 96px 0; background: var(--white); }
+    .step-wrap { display: flex; flex-direction: column; }
+    .step-item { display: flex; gap: 24px; align-items: flex-start; padding: 28px 0; border-bottom: 1px solid var(--border); }
+    .step-item:last-child { border-bottom: none; }
+    .step-num { width: 44px; height: 44px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800; color: white; flex-shrink: 0; box-shadow: 0 4px 14px var(--green-glow); }
+    .step-body h5 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+    .step-body p  { font-size: 0.875rem; color: var(--slate-600); line-height: 1.6; margin: 0; }
+
+    /* CTA */
+    .cta-band { padding: 96px 0; text-align: center; background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(26,107,74,0.08) 0%, transparent 70%); }
+    .cta-band h2 { font-size: 2.2rem; font-weight: 800; color: var(--text); letter-spacing: -0.8px; margin-bottom: 14px; }
+    .cta-band p  { font-size: 1rem; color: var(--slate-600); margin-bottom: 36px; }
+
+    /* FOOTER */
+    .footer { background: var(--dark); color: white; padding: 56px 0 32px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .footer-tagline { font-size: 0.82rem; color: var(--slate-400); line-height: 1.6; max-width: 240px; }
+    .footer-col h6 { font-size: 0.8rem; font-weight: 700; color: white; margin-bottom: 14px; letter-spacing: 0.3px; }
+    .footer-col a  { display: block; font-size: 0.82rem; color: var(--slate-400); text-decoration: none; padding: 3px 0; transition: color 0.15s; }
+    .footer-col a:hover { color: white; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); margin-top: 48px; padding-top: 24px; text-align: center; font-size: 0.78rem; color: var(--slate-400); }
+    .footer-bottom a { color: var(--slate-400); text-decoration: none; }
+    .footer-bottom a:hover { color: white; }
+    .footer-logo span { font-weight: 700; font-size: 0.95rem; }
+
+    @media (max-width: 768px) { .topbar-nav { display: none; } .hero { padding: 90px 0 60px; } .hero-visual { margin-top: 48px; } }
+  </style>
 </head>
 <body>
 
-    <!-- Bouton toggle (toujours visible) -->
-    <button class="sidebar-toggle" id="sidebarToggle" title="Afficher/Masquer le menu">
-        <i class="fas fa-bars" id="toggleIcon"></i>
-    </button>
+<!-- SVG logo réutilisable (éclair sur fond vert) -->
+<svg style="display:none">
+  <symbol id="djadara-logo" viewBox="0 0 100 100">
+    <rect width="100" height="100" rx="22" fill="#1A6B4A"/>
+    <path d="M58 14 L32 54 L48 54 L42 86 L68 46 L52 46 Z"
+          fill="none" stroke="white" stroke-width="6"
+          stroke-linejoin="round" stroke-linecap="round"/>
+  </symbol>
+</svg>
 
-    <!-- Sidebar gauche -->
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <a class="sidebar-brand" href="/">
-                <div class="brand-logo">YR</div>
-                <span class="brand-name">Yassir RH</span>
-            </a>
+<!-- ═══ TOPBAR ═══ -->
+<nav class="topbar" id="topbar">
+  <a href="/" class="topbar-brand">
+    <svg class="logo-icon" viewBox="0 0 100 100"><use href="#djadara-logo"/></svg>
+    <span class="topbar-name">Djadara RH</span>
+  </a>
+  <div class="topbar-nav">
+    <a href="#features">Fonctionnalités</a>
+    <a href="#how">Comment ça marche</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="topbar-actions">
+    <a href="/login"    class="btn-nav-login">Se connecter</a>
+    <a href="/register" class="btn-nav-signup">S'inscrire</a>
+  </div>
+</nav>
+
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center gy-5">
+
+      <div class="col-lg-6 text-center text-lg-start">
+        <div class="hero-pill">
+          <span class="dot"></span>
+          Analyse automatique de CV par intelligence artificielle
         </div>
-
-        <nav class="sidebar-nav">
-            <a class="sidebar-link" href="#features">
-                <i class="fas fa-star"></i>
-                <span>Fonctionnalités</span>
-            </a>
-            <a class="sidebar-link" href="#steps">
-                <i class="fas fa-list-ol"></i>
-                <span>Comment ça marche</span>
-            </a>
-            <a class="sidebar-link" href="#contact">
-                <i class="fas fa-envelope"></i>
-                <span>Contact</span>
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <a class="btn btn-login w-100 mb-2 text-center" href="/login">
-                <i class="fas fa-sign-in-alt me-1"></i> Se connecter
-            </a>
-            <a class="btn btn-signup w-100 text-center" href="/register">
-                <i class="fas fa-user-plus me-1"></i> S'inscrire
-            </a>
+        <h1 class="hero-title">
+          Recrutez les meilleurs<br>
+          <span class="gradient-text">profils en un instant</span>
+        </h1>
+        <p class="hero-sub mx-0">
+          Djadara RH lit et compare automatiquement les CV de vos candidats avec votre offre d'emploi,
+          et vous donne un classement clair pour choisir le meilleur profil.
+        </p>
+        <div class="hero-btns justify-content-center justify-content-lg-start">
+          <a href="/register" class="btn-primary-custom">
+            <i class="fas fa-bolt"></i>
+            Commencer gratuitement
+          </a>
+          <a href="#how" class="btn-outline-custom">
+            <i class="fas fa-play-circle"></i>
+            Voir comment ça marche
+          </a>
         </div>
-    </aside>
+        <p class="hero-note text-center text-lg-start">
+          <i class="fas fa-check-circle me-1"></i>
+          Gratuit · Aucune carte requise · Résultats en quelques secondes
+        </p>
+      </div>
 
-    <!-- Overlay (ferme sidebar au clic) -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <!-- Contenu principal -->
-    <div class="main-content" id="mainContent">
-
-        <!-- Hero Section -->
-        <section class="hero-section">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 col-md-10 text-center hero-content">
-
-                        <h1 class="hero-title">
-                            Recrutez les meilleurs<br>
-                            <span class="gradient-text">profils en un instant</span>
-                        </h1>
-
-                        <p class="hero-subtitle">
-                            Yassir RH analyse automatiquement les CV de vos candidats grâce à
-                            l'intelligence artificielle et vous propose un matching précis avec vos offres d'emploi.
-                        </p>
-
-                        <div class="hero-cta">
-                            <a href="/login" class="btn btn-primary-custom btn-lg">
-                                <i class="fas fa-sparkles"></i>
-                                Commencer maintenant
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                            <p class="cta-note">Gratuit · Aucune carte requise</p>
-                        </div>
-
-                    </div>
-                </div>
+      <!-- Mockup -->
+      <div class="col-lg-6">
+        <div class="hero-visual">
+          <div class="visual-header">
+            <div>
+              <div class="visual-title">Résultats du matching</div>
+              <div style="font-size:0.75rem;color:var(--muted);margin-top:2px;">Développeur Web — Paris</div>
             </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="features-section" id="features">
-            <div class="container">
-                <div class="text-center mb-5">
-                    <h2 class="section-title">Tout ce dont vous avez besoin</h2>
-                    <p class="section-subtitle">Un workflow simple en 3 étapes pour recruter intelligemment</p>
-                </div>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-briefcase"></i>
-                            </div>
-                            <h5 class="feature-title">Gérez vos offres</h5>
-                            <p class="feature-desc">Créez et publiez vos offres d'emploi en quelques clics avec tous les critères requis.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-file-upload"></i>
-                            </div>
-                            <h5 class="feature-title">Analysez les CV</h5>
-                            <p class="feature-desc">Importez les CV de vos candidats et laissez l'IA extraire toutes les informations automatiquement.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                            <h5 class="feature-title">Matching intelligent</h5>
-                            <p class="feature-desc">Obtenez un score de compatibilité précis entre chaque candidat et votre offre en secondes.</p>
-                        </div>
-                    </div>
-                </div>
+            <span class="visual-badge">5 candidats analysés</span>
+          </div>
+          <div class="cv-row">
+            <div class="cv-avatar">AM</div>
+            <div class="cv-info">
+              <div class="cv-name">Amine Meziane</div>
+              <div class="cv-role">5 ans d'expérience · Bac+5</div>
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:94%;background:var(--green);"></div></div>
             </div>
-        </section>
-
-        <!-- Steps Section -->
-        <section class="steps-section py-5" id="steps">
-            <div class="container">
-                <div class="text-center mb-5">
-                    <h2 class="section-title">Comment ça fonctionne ?</h2>
-                    <p class="section-subtitle">En 4 étapes simples, trouvez le candidat idéal</p>
-                </div>
-                <div class="row g-4 align-items-start">
-                    <div class="col-md-3 text-center">
-                        <div class="step-number">1</div>
-                        <h6 class="step-title mt-3">Publiez une offre</h6>
-                        <p class="step-desc">Saisissez le poste, les compétences et critères attendus.</p>
-                    </div>
-                    <div class="col-md-3 text-center">
-                        <div class="step-number">2</div>
-                        <h6 class="step-title mt-3">Uploadez les CV</h6>
-                        <p class="step-desc">Importez plusieurs CV PDF en une seule fois.</p>
-                    </div>
-                    <div class="col-md-3 text-center">
-                        <div class="step-number">3</div>
-                        <h6 class="step-title mt-3">Analyse automatique</h6>
-                        <p class="step-desc">L'IA extrait le texte et compare avec l'offre (TF-IDF + cosine + KNN).</p>
-                    </div>
-                    <div class="col-md-3 text-center">
-                        <div class="step-number">4</div>
-                        <h6 class="step-title mt-3">Résultats classés</h6>
-                        <p class="step-desc">Consultez le score de matching et le classement de chaque candidat.</p>
-                    </div>
-                </div>
+            <div class="text-end">
+              <div class="cv-score score-high">94%</div>
+              <div style="font-size:0.7rem;color:var(--green);">Excellent</div>
             </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="cta-section py-5">
-            <div class="container text-center">
-                <h2 class="cta-title mb-3">Prêt à recruter plus intelligemment ?</h2>
-                <p class="cta-subtitle mb-4">Commencez gratuitement et découvrez la puissance de l'IA pour votre processus de recrutement</p>
-                <div class="d-flex gap-3 justify-content-center flex-wrap">
-                    <a href="/register" class="btn btn-primary-custom btn-lg">
-                        <i class="fas fa-user-plus"></i> Créer un compte
-                    </a>
-                    <a href="/login" class="btn btn-outline-custom btn-lg">
-                        <i class="fas fa-sign-in-alt"></i> Se connecter
-                    </a>
-                </div>
+          </div>
+          <div class="cv-row">
+            <div class="cv-avatar" style="background:var(--blue-l);color:var(--blue);">SK</div>
+            <div class="cv-info">
+              <div class="cv-name">Sara Khelifi</div>
+              <div class="cv-role">3 ans d'expérience · Bac+5</div>
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:81%;background:var(--blue);"></div></div>
             </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer py-5" id="contact">
-            <div class="container">
-                <div class="row mb-4">
-                    <div class="col-md-4 mb-4 mb-md-0">
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <div class="brand-logo brand-logo-sm">YR</div>
-                            <span class="fw-bold">Yassir RH</span>
-                        </div>
-                        <p class="small" style="color:#94A3B8;">Plateforme intelligente de recrutement basée sur l'IA pour transformer votre processus de sélection.</p>
-                    </div>
-                    <div class="col-md-4 mb-4 mb-md-0">
-                        <h6 class="fw-bold mb-3">Liens</h6>
-                        <ul class="list-unstyled small footer-links">
-                            <li><a href="#features">Fonctionnalités</a></li>
-                            <li><a href="#steps">Comment ça marche</a></li>
-                            <li><a href="/login">Connexion</a></li>
-                            <li><a href="/register">Inscription</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <h6 class="fw-bold mb-3">Nous Contacter</h6>
-                        <p class="text-muted small">
-                            <i class="fas fa-envelope me-2"></i> info@yassir-rh.com<br><br>
-                            <i class="fas fa-phone me-2"></i> +213 XX XX XX XX
-                        </p>
-                    </div>
-                </div>
-                <hr>
-                <div class="text-center text-muted small">
-                    <p class="mb-0">&copy; 2026 Yassir RH. Tous droits réservés. | <a href="#">Politique de confidentialité</a></p>
-                </div>
+            <div class="text-end">
+              <div class="cv-score score-low">81%</div>
+              <div style="font-size:0.7rem;color:var(--blue);">Très bon</div>
             </div>
-        </footer>
+          </div>
+          <div class="cv-row">
+            <div class="cv-avatar" style="background:var(--amber-l);color:var(--amber);">YB</div>
+            <div class="cv-info">
+              <div class="cv-name">Yacine Brahimi</div>
+              <div class="cv-role">1 an d'expérience · Bac+3</div>
+              <div class="score-bar-wrap"><div class="score-bar-fill" style="width:67%;background:var(--amber);"></div></div>
+            </div>
+            <div class="text-end">
+              <div class="cv-score score-mid">67%</div>
+              <div style="font-size:0.7rem;color:var(--amber);">Partiel</div>
+            </div>
+          </div>
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div style="font-size:0.75rem;color:var(--muted);">
+              <i class="fas fa-clock me-1"></i> Résultats en <strong style="color:var(--text);">quelques secondes</strong>
+            </div>
+            <a href="/register" style="font-size:0.78rem;font-weight:600;color:var(--green);text-decoration:none;">
+              Essayer maintenant →
+            </a>
+          </div>
+        </div>
+      </div>
 
-    </div><!-- end main-content -->
+    </div>
+  </div>
+</section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const sidebar     = document.getElementById('sidebar');
-        const toggle      = document.getElementById('sidebarToggle');
-        const overlay     = document.getElementById('sidebarOverlay');
-        const main        = document.getElementById('mainContent');
-        const icon        = document.getElementById('toggleIcon');
 
-        function openSidebar() {
-            sidebar.classList.add('open');
-            overlay.classList.add('active');
-            main.classList.add('shifted');
-            icon.className = 'fas fa-times';
+<!-- ═══ STATS ═══ -->
+<div class="stats-band">
+  <div class="container">
+    <div class="row g-4 text-center">
+      <div class="col-6 col-md-3">
+        <span class="stat-num">Rapide</span>
+        <div class="stat-lbl">Analyse en quelques secondes</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <span class="stat-num">Précis</span>
+        <div class="stat-lbl">Score de compatibilité fiable</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <span class="stat-num">Illimité</span>
+        <div class="stat-lbl">CV analysables par offre</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <span class="stat-num">Gratuit</span>
+        <div class="stat-lbl">Aucun abonnement requis</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ FEATURES ═══ -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-label">Fonctionnalités</span>
+      <h2 class="section-title">Tout ce dont vous avez besoin</h2>
+      <p class="section-sub">Un outil simple et efficace pour recruter plus intelligemment</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-briefcase"></i></div>
+          <div class="feat-title">Gérez vos offres</div>
+          <p class="feat-desc">Créez vos offres d'emploi en quelques clics : décrivez le poste, les compétences attendues et le niveau d'expérience requis.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-file-import"></i></div>
+          <div class="feat-title">Importez les CV</div>
+          <p class="feat-desc">Déposez plusieurs CV en PDF en une seule fois. La plateforme lit et extrait automatiquement toutes les informations.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+          <div class="feat-title">Matching automatique</div>
+          <p class="feat-desc">Chaque candidat reçoit un score de compatibilité avec votre offre. Plus le score est élevé, plus le profil correspond.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-chart-bar"></i></div>
+          <div class="feat-title">Résultats détaillés</div>
+          <p class="feat-desc">Consultez le score par critère : compétences, expérience, formation. Identifiez rapidement les points forts de chaque candidat.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-users"></i></div>
+          <div class="feat-title">Suivi des candidats</div>
+          <p class="feat-desc">Retrouvez à tout moment l'historique de vos candidats, triés par score ou par offre d'emploi.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-shield-halved"></i></div>
+          <div class="feat-title">Sécurisé & privé</div>
+          <p class="feat-desc">Vos données sont accessibles uniquement depuis votre compte. Votre espace est protégé et isolé de celui des autres recruteurs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-5">
+        <span class="section-label">Comment ça fonctionne</span>
+        <h2 class="section-title">4 étapes pour trouver<br>le candidat idéal</h2>
+        <p class="section-sub mb-0">Un processus simple, du dépôt des CV à la décision finale.</p>
+      </div>
+      <div class="col-lg-6 offset-lg-1">
+        <div class="step-wrap">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h5>Publiez une offre d'emploi</h5>
+              <p>Saisissez le titre du poste, les compétences souhaitées et le niveau d'expérience attendu.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h5>Importez les CV des candidats</h5>
+              <p>Déposez les fichiers PDF de vos candidats. Vous pouvez en ajouter plusieurs à la fois.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h5>L'IA compare et note chaque profil</h5>
+              <p>La plateforme lit chaque CV et lui attribue un score selon sa correspondance avec votre offre.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <h5>Consultez le classement</h5>
+              <p>Les candidats sont triés du meilleur au moins bien. Cliquez sur un profil pour voir son analyse complète.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-band">
+  <div class="container">
+    <h2>Prêt à recruter plus intelligemment ?</h2>
+    <p>Commencez gratuitement dès maintenant — aucune configuration requise.</p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+      <a href="/register" class="btn-primary-custom btn-lg">
+        <i class="fas fa-user-plus"></i> Créer un compte
+      </a>
+      <a href="/login" class="btn-outline-custom btn-lg">
+        <i class="fas fa-sign-in-alt"></i> Se connecter
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-md-4">
+        <div class="footer-logo">
+          <svg class="logo-icon-sm" viewBox="0 0 100 100"><use href="#djadara-logo"/></svg>
+          <span>Djadara RH</span>
+        </div>
+        <p class="footer-tagline">Plateforme de recrutement intelligente — trouvez le bon candidat plus vite.</p>
+      </div>
+      <div class="col-6 col-md-2 footer-col">
+        <h6>Produit</h6>
+        <a href="#features">Fonctionnalités</a>
+        <a href="#how">Comment ça marche</a>
+        <a href="/register">S'inscrire</a>
+        <a href="/login">Connexion</a>
+      </div>
+      <div class="col-6 col-md-2 footer-col">
+        <h6>Légal</h6>
+        <a href="#">Confidentialité</a>
+        <a href="#">Conditions d'utilisation</a>
+      </div>
+      <div class="col-md-4 footer-col">
+        <h6>Contact</h6>
+        <a href="mailto:info@djadara-rh.com"><i class="fas fa-envelope me-2"></i>info@djadara-rh.com</a>
+        <a href="#"><i class="fas fa-phone me-2"></i>+213 XX XX XX XX</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 Djadara RH. Tous droits réservés.
+      &nbsp;·&nbsp;
+      <a href="#">Politique de confidentialité</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ══════════════════════════════════════
+   1. TOPBAR — ombre au scroll
+══════════════════════════════════════ */
+window.addEventListener('scroll', () => {
+  document.getElementById('topbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+/* ══════════════════════════════════════
+   2. SMOOTH SCROLL
+══════════════════════════════════════ */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+
+/* ══════════════════════════════════════
+   3. REVEAL AU SCROLL (fade-in + slide-up)
+══════════════════════════════════════ */
+const revealStyle = document.createElement('style');
+revealStyle.textContent = `
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+`;
+document.head.appendChild(revealStyle);
+
+// Ajouter la classe reveal aux éléments ciblés
+document.querySelectorAll('.feat-card, .step-item, .stat-item, .cv-row').forEach((el, i) => {
+  el.classList.add('reveal', `reveal-delay-${(i % 5) + 1}`);
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ══════════════════════════════════════
+   4. COMPTEURS ANIMÉS (stats band)
+══════════════════════════════════════ */
+// Les stats sont textuelles, on anime leur apparition avec un effet typewriter
+const statNums = document.querySelectorAll('.stat-num');
+const statWords = ['Rapide', 'Précis', 'Illimité', 'Gratuit'];
+
+const typeWriter = (el, text, speed = 60) => {
+  el.textContent = '';
+  let i = 0;
+  const tick = () => {
+    if (i < text.length) { el.textContent += text[i++]; setTimeout(tick, speed); }
+  };
+  tick();
+};
+
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      statNums.forEach((el, i) => {
+        setTimeout(() => typeWriter(el, statWords[i], 55), i * 200);
+      });
+      statsObserver.disconnect();
+    }
+  });
+}, { threshold: 0.5 });
+
+const statsBand = document.querySelector('.stats-band');
+if (statsBand) statsObserver.observe(statsBand);
+
+/* ══════════════════════════════════════
+   5. PARTICULES FLOTTANTES dans le hero
+══════════════════════════════════════ */
+const hero = document.querySelector('.hero');
+if (hero) {
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.45;';
+  hero.style.position = 'relative';
+  hero.insertBefore(canvas, hero.firstChild);
+
+  const ctx = canvas.getContext('2d');
+  let W, H, dots;
+
+  const resize = () => {
+    W = canvas.width  = hero.offsetWidth;
+    H = canvas.height = hero.offsetHeight;
+  };
+  resize();
+  window.addEventListener('resize', resize);
+
+  const N = 38;
+  dots = Array.from({ length: N }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: Math.random() * 2.5 + 1,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    alpha: Math.random() * 0.5 + 0.2
+  }));
+
+  const GREEN = '26,107,74';
+
+  const draw = () => {
+    ctx.clearRect(0, 0, W, H);
+    // Lignes de connexion
+    dots.forEach((a, i) => {
+      dots.slice(i + 1).forEach(b => {
+        const dist = Math.hypot(a.x - b.x, a.y - b.y);
+        if (dist < 130) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(${GREEN},${0.12 * (1 - dist / 130)})`;
+          ctx.lineWidth = 1;
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
         }
+      });
+    });
+    // Points
+    dots.forEach(d => {
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${GREEN},${d.alpha})`;
+      ctx.fill();
 
-        function closeSidebar() {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            main.classList.remove('shifted');
-            icon.className = 'fas fa-bars';
-        }
+      d.x += d.vx; d.y += d.vy;
+      if (d.x < 0 || d.x > W) d.vx *= -1;
+      if (d.y < 0 || d.y > H) d.vy *= -1;
+    });
+    requestAnimationFrame(draw);
+  };
+  draw();
+}
 
-        toggle.addEventListener('click', () => {
-            sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
-        });
+/* ══════════════════════════════════════
+   6. HOVER 3D léger sur les feat-cards
+══════════════════════════════════════ */
+document.querySelectorAll('.feat-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width  - 0.5) * 10;
+    const y = ((e.clientY - r.top)  / r.height - 0.5) * -10;
+    card.style.transform = `perspective(600px) rotateY(${x}deg) rotateX(${y}deg) translateY(-4px)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
 
-        overlay.addEventListener('click', closeSidebar);
-
-        // Fermer au clic sur un lien sidebar
-        document.querySelectorAll('.sidebar-link').forEach(link => {
-            link.addEventListener('click', closeSidebar);
-        });
-    </script>
+/* ══════════════════════════════════════
+   7. MOCKUP — barres de score animées
+══════════════════════════════════════ */
+const fills = document.querySelectorAll('.score-bar-fill');
+fills.forEach(bar => {
+  const target = bar.style.width;
+  bar.style.width = '0%';
+  bar.style.transition = 'width 1.2s cubic-bezier(0.34,1.56,0.64,1)';
+  const heroObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { bar.style.width = target; heroObserver.disconnect(); }
+    });
+  }, { threshold: 0.5 });
+  heroObserver.observe(bar);
+});
+</script>
 </body>
 </html>

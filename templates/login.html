@@ -4,57 +4,196 @@
 
 {% block head %}
 <style>
-    .login-outer {
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #F5F5F0;
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: radial-gradient(circle at 10% 20%, rgb(255, 200, 212) 0%, rgb(255, 240, 243) 90.1%);
         padding: 20px;
     }
+
+    .page-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 100vh;
+    }
+
     .login-card {
         background: #ffffff;
-        padding: 40px;
-        border-radius: 24px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        border-radius: 20px;
+        padding: 48px 44px;
         width: 100%;
-        max-width: 450px;
+        max-width: 440px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.06);
     }
-    .login-header h1 { font-size: 28px; font-weight: 700; color: #0F172A; margin-bottom: 8px; }
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; }
-    .form-control { width: 100%; padding: 14px 16px; border: 1.5px solid #E2E8F0; border-radius: 12px; outline: none; font-size: 15px; }
-    .form-control:focus { border-color: #FF3366; }
-    .btn-primary { width: 100%; background: #FF3366; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; }
-    .btn-primary:hover { background: #E02253; }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 36px;
+    }
+    .brand-icon {
+        width: 44px; height: 44px;
+        background: #1A6B4A;
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        color: white; font-weight: 700; font-size: 18px;
+    }
+    .brand-text { line-height: 1.2; }
+    .brand-text strong { display: block; font-size: 16px; color: #0F172A; font-weight: 700; }
+    .brand-text span { font-size: 12px; color: #64748B; }
+
+    h1 { font-size: 24px; font-weight: 700; color: #0F172A; margin-bottom: 6px; }
+    .subtitle { font-size: 14px; color: #64748B; margin-bottom: 32px; }
+
+    .alert {
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 13px;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+    .alert-danger  { background: #FEE2E2; color: #B91C1C; }
+    .alert-success { background: #D1FAE5; color: #065F46; }
+    .alert-warning { background: #FEF3C7; color: #92400E; }
+    .alert-info    { background: #DBEAFE; color: #1E40AF; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 7px;
+    }
+    .form-group input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid #E5E7EB;
+        border-radius: 10px;
+        font-size: 14px;
+        color: #0F172A;
+        outline: none;
+        transition: border-color 0.2s;
+        background: #FAFAFA;
+    }
+    .form-group input:focus {
+        border-color: #1A6B4A;
+        background: #fff;
+    }
+
+    .row-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        font-size: 13px;
+    }
+    .remember-me {
+        display: flex; align-items: center; gap: 7px;
+        color: #64748B; cursor: pointer;
+    }
+    .remember-me input[type="checkbox"] {
+        accent-color: #1A6B4A;
+        width: 15px; height: 15px;
+        cursor: pointer;
+    }
+    .forgot-link {
+        color: #1A6B4A;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 13px;
+    }
+    .forgot-link:hover { text-decoration: underline; }
+
+    .btn-submit {
+        width: 100%;
+        background: #1A6B4A;
+        color: white;
+        border: none;
+        padding: 13px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-bottom: 20px;
+    }
+    .btn-submit:hover { background: #155C3E; }
+
+    .footer-text {
+        text-align: center;
+        font-size: 13px;
+        color: #64748B;
+    }
+    .footer-text a {
+        color: #1A6B4A;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .footer-text a:hover { text-decoration: underline; }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="login-outer">
+<div class="page-wrapper">
     <div class="login-card">
-        <div class="login-header">
-            <h1>Connexion</h1>
-            <p style="color: #64748B; margin-bottom: 30px;">Accédez à votre espace Recruteur</p>
+
+        <div class="brand">
+            <div class="brand-icon">Y</div>
+            <div class="brand-text">
+                <strong>Yassir RH</strong>
+                <span>Recrutement Intelligent</span>
+            </div>
         </div>
+
+        <h1>Connexion</h1>
+        <p class="subtitle">Accédez à votre espace Recruteur</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endwith %}
 
         <form action="{{ url_for('login') }}" method="POST">
             <div class="form-group">
                 <label for="email">Adresse email</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="exemple@yassir.com" required>
+                <input type="email" id="email" name="email"
+                       placeholder="exemple@domaine.com" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+                <input type="password" id="password" name="password"
+                       placeholder="••••••••" required>
             </div>
 
-            <button type="submit" class="btn-primary">Se connecter</button>
+            <div class="row-options">
+                <label class="remember-me">
+                    <input type="checkbox" name="remember_me" value="1">
+                    Se souvenir de moi
+                </label>
+                <a href="{{ url_for('forgot_password') }}" class="forgot-link">
+                    Mot de passe oublié ?
+                </a>
+            </div>
+
+            <button type="submit" class="btn-submit">Se connecter</button>
         </form>
 
-        <p style="text-align: center; margin-top: 25px; font-size: 14px; color: #64748B;">
-            Pas encore de compte ? <a href="{{ url_for('register') }}" style="color: #FF3366; text-decoration: none; font-weight: 600;">Créer un compte</a>
+        <p class="footer-text">
+            Pas encore de compte ?
+            <a href="{{ url_for('register') }}">Créer un compte</a>
         </p>
+
     </div>
 </div>
 {% endblock %}

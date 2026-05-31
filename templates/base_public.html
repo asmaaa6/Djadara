@@ -5,21 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Yassir RH{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #FF3366;
-            --primary-hover: #E02253;
-            --dark: #0F172A;
-            --bg-light: #F8FAFC;
+            --green:   #1A6B4A;
+            --green-h: #155C3E;
+            --green-l: #ECFDF5;
+            --bg:      #F8FAFC;
+            --dark:    #0F172A;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: var(--bg-light); color: var(--dark); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'DM Sans', sans-serif; }
+        body { background-color: var(--bg); color: var(--dark); -webkit-font-smoothing: antialiased; }
     </style>
     {% block head %}{% endblock %}
 </head>
 <body>
-    
+
     {% block content %}{% endblock %}
 
 </body>

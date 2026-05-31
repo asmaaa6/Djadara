@@ -1,12 +1,16 @@
 DROP TABLE IF EXISTS cvs, offres, users CASCADE;
 
 CREATE TABLE IF NOT EXISTS users (
-    id         SERIAL PRIMARY KEY,
-    nom        VARCHAR(100)        NOT NULL,
-    entreprise VARCHAR(100),
-    email      VARCHAR(100) UNIQUE NOT NULL,
-    password   VARCHAR(255)        NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id                 SERIAL PRIMARY KEY,
+    nom                VARCHAR(100)        NOT NULL,
+    entreprise         VARCHAR(100),
+    email              VARCHAR(100) UNIQUE NOT NULL,
+    password           VARCHAR(255)        NOT NULL,
+    verification_token VARCHAR(100),
+    is_verified        BOOLEAN DEFAULT FALSE,
+    reset_code         VARCHAR(6),
+    reset_code_expiry  TIMESTAMP,
+    created_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS offres (
